@@ -1,0 +1,14 @@
+#!/usr/bin/env python3
+
+import argparse
+
+parser = argparse.ArgumentParser(
+    description='ETL for bibliographic data.')
+
+parser.add_argument('--workflow', type=str,
+                    help='Workflow file in yalm format')
+
+args = parser.parse_args()
+if __name__ == '__main__':
+    workflow = args.workflow
+    #TODO: magic happpens here
