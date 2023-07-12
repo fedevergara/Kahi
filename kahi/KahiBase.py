@@ -1,7 +1,7 @@
 
 class KahiBase:
-    pass
-    # TODO: Implement KahiBase
+    def __init__(self):
+        pass
 
     def run(self):
         """

@@ -6,9 +6,15 @@ parser = argparse.ArgumentParser(
     description='ETL for bibliographic data.')
 
 parser.add_argument('--workflow', type=str,
-                    help='Workflow file in yalm format')
+                    help='Workflow file in yaml format',
+                    required=True)
 
 args = parser.parse_args()
+
 if __name__ == '__main__':
-    workflow = args.workflow
-    #TODO: magic happpens here
+    #create instance of kahi with the workflow file as a parameter
+    kahi=kahi(args.workflow)
+    #check if workflow could be run with the available plugins
+    kahi.check_workflow()
+    #run the workflow
+    kahi.run()
