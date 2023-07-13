@@ -40,7 +40,7 @@ class Kahi:
         Loads all plugins available in the system
         """
         discovered_plugins = {
-            name : importlib.import_module(name)
+            name : import_module(name)
             for finder, name, ispkg
             in pkgutil.iter_modules()
             if name.startswith(self.plugin_prefix+"_")
@@ -107,7 +107,7 @@ class Kahi:
                 time_start = time()
                 status=run()
                 time_elapsed = time()-time_start
-                
+
                 if self.log_db[self.config["log_collection"]].find_one({"id":module_name}):
                     self.log_db[self.config["log_collection"]].update_one(
                         {
