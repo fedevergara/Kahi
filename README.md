@@ -3,10 +3,6 @@
 
 # Kahi
 KAHI is a powerful ETL (Extract, Transform, Load) application designed to construct an academic database by merging databases and files from various sources. It simplifies the database construction process by offering a framework to define a workflow of sequential tasks using a plugin system that KAHI understands.
- 
-
-# Description
-TODO.
 
 # Plugins
 Take a look on plugins examples in the repository

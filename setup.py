@@ -69,7 +69,7 @@ def main():
         # Details
         url="https://github.com/colav/Kahi",
         scripts=['bin/kahi_run'],
-        #
+
         license="BSD",
 
         description="ETL (Extract, Transform and Load) for bibliographic data using an advance data workflow",
@@ -80,8 +80,8 @@ def main():
 
         # Dependent packages (distributions)
         install_requires=[
-        "pyyaml"
-        ],
+            "pyyaml"
+        ]
     )
 
 
