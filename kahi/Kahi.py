@@ -110,8 +110,7 @@ class Kahi:
 
             plugin_class = getattr(
                 self.plugins[module_name],
-                self.plugin_prefix.capitalize() +
-                module_name)
+                self.plugin_prefix.capitalize() + module_name)
 
             plugin_config = self.config.copy()
             plugin_config[module_name] = self.workflow[module_name]
