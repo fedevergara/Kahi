@@ -9,10 +9,12 @@ from time import time
 class OrderedLoader(yaml.SafeLoader):
     def __init__(self, *args, **kwargs):
         super(OrderedLoader, self).__init__(*args, **kwargs)
-        def construct_dict_order(self, data): return OrderedDict(
-            self.construct_pairs(data))
+
+        def construct_dict_order(self, data):
+            return OrderedDict(self.construct_pairs(data))
         self.add_constructor(
-            yaml.resolver.BaseResolver.DEFAULT_MAPPING_TAG, construct_dict_order)
+            yaml.resolver.BaseResolver.DEFAULT_MAPPING_TAG,
+            construct_dict_order)
 
 
 class Kahi:
@@ -37,7 +39,7 @@ class Kahi:
             data = yaml.load(stream, Loader=OrderedLoader)
             self.workflow = data["workflow"]
             self.config = data["config"]
-            self.client = MongoClient(self.config["mongodb_url"])
+            self.client = MongoClient(self.config["database_url"])
 
     def load_plugins(self, verbose=0):
         """
@@ -47,7 +49,7 @@ class Kahi:
             name: import_module(name)
             for finder, name, ispkg
             in pkgutil.iter_modules()
-            if name.startswith(self.plugin_prefix+"_")
+            if name.startswith(self.plugin_prefix + "_")
         }
         self.discovered_plugins = discovered_plugins
 
@@ -56,7 +58,7 @@ class Kahi:
         Retrieves the logs from the database
         """
 
-        self.log_db = self.client[self.config["log_db"]]
+        self.log_db = self.client[self.config["log_database"]]
         log = list(self.log_db[self.config["log_collection"]].find())
         if log:
             self.log = log
@@ -75,19 +77,20 @@ class Kahi:
         # import modules
         for module_name in self.workflow.keys():
             if self.verbose > 4:
-                print("loading plugin: "+self.plugin_prefix+module_name)
+                print("Loading plugin: " + self.plugin_prefix + module_name)
             try:
                 self.plugins[module_name] = import_module(
-                    self.plugin_prefix+module_name +
+                    self.plugin_prefix +
+                    module_name +
                     "." +
-                    self.plugin_prefix.capitalize()+module_name
-                )
+                    self.plugin_prefix.capitalize() +
+                    module_name)
             except ModuleNotFoundError as e:
                 if self.verbose > 0 and self.verbose < 5:
                     print(e)
                     print("Plugin {} not found.\nTry\n\tpip install {}".format(
                         module_name,
-                        self.plugin_prefix+module_name
+                        self.plugin_prefix + module_name
                     ))
                     return None
                 if self.verbose > 4:
@@ -95,34 +98,46 @@ class Kahi:
 
         # run workflow
         for module_name, params in self.workflow.items():
+            executed_module = False
+            if self.log:
+                for log in self.log:
+                    if log["_id"] == module_name:
+                        if log["status"] == 0:
+                            executed_module = True
+                            break
+            if executed_module:
+                if self.verbose > 4:
+                    print("Skipped plugin: " + self.plugin_prefix + module_name)
+                continue
             if self.verbose > 4:
-                print("running plugin: "+self.plugin_prefix+module_name)
+                print("Running plugin: " + self.plugin_prefix + module_name)
 
             plugin_class = getattr(
-                self.plugins[module_name], self.plugin_prefix.capitalize() +
-                module_name
-            )
+                self.plugins[module_name],
+                self.plugin_prefix.capitalize() +
+                module_name)
 
-            plugin_instance = plugin_class(
-                config=self.config
-            )
+            plugin_config = self.config.copy()
+            plugin_config[module_name] = self.workflow[module_name]
+            plugin_instance = plugin_class(config=plugin_config)
 
             run = getattr(plugin_instance, "run")
             try:
                 time_start = time()
                 status = run()
-                time_elapsed = time()-time_start
+                time_elapsed = time() - time_start
 
-                if self.log_db[self.config["log_collection"]].find_one({"id": module_name}):
+                if self.log_db[self.config["log_collection"]
+                               ].find_one({"_id": module_name}):
                     self.log_db[self.config["log_collection"]].update_one(
                         {
-                            "id": module_name
+                            "_id": module_name
                         },
                         {"$set":
                             {
                                 "time": int(time_start),
-                                "status": 0,
-                                "message": "",
+                                "status": status,
+                                "message": "ok",
                                 "time_elapsed": int(time_elapsed)
                             }
                          }
@@ -130,24 +145,25 @@ class Kahi:
                 else:
                     self.log_db[self.config["log_collection"]].insert_one(
                         {
-                            "id": module_name,
+                            "_id": module_name,
                             "time": int(time_start),
-                            "status": 0,
-                            "message": "",
+                            "status": status,
+                            "message": "ok",
                             "time_elapsed": int(time_elapsed)
                         }
                     )
             except Exception as e:
-                if self.log_db[self.config["log_collection"]].find_one({"id": module_name}):
+                if self.log_db[self.config["log_collection"]
+                               ].find_one({"_id": module_name}):
                     self.log_db[self.config["log_collection"]].update_one(
                         {
-                            "id": module_name
+                            "_id": module_name
                         },
                         {"$set":
                             {
                                 "time": int(time()),
                                 "status": 1,
-                                "message": e,
+                                "message": str(e),
                                 "time_elapsed": 0
                             }
                          }
@@ -155,10 +171,10 @@ class Kahi:
                 else:
                     self.log_db[self.config["log_collection"]].insert_one(
                         {
-                            "id": module_name,
+                            "_id": module_name,
                             "time": int(time()),
                             "status": 1,
-                            "message": e,
+                            "message": str(e),
                             "time_elapsed": 0
                         }
                     )

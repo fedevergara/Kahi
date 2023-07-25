@@ -1,20 +1,27 @@
 #!/usr/bin/env python3
 
 import argparse
+from kahi import Kahi
 
 parser = argparse.ArgumentParser(
     description='ETL for bibliographic data.')
 
 parser.add_argument('--workflow', type=str,
                     help='Workflow file in yaml format',
-                    required=True)
+                    required=False)
+
+parser.add_argument('--generate-plugin', type=str,
+                    help='Generates a plugin template',
+                    required=False)
+
+parser.add_argument('--generate-workflow', type=str,
+                    help='Generates a workflow template',
+                    required=False)
 
 args = parser.parse_args()
 
 if __name__ == '__main__':
     # create instance of kahi with the workflow file as a parameter
-    kahi = kahi(args.workflow)
-    # check if workflow could be run with the available plugins
-    kahi.check_workflow()
+    kahi = Kahi.Kahi(args.workflow)
     # run the workflow
     kahi.run()
