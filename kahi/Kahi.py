@@ -80,11 +80,7 @@ class Kahi:
                 print("Loading plugin: " + self.plugin_prefix + module_name)
             try:
                 self.plugins[module_name] = import_module(
-                    self.plugin_prefix +
-                    module_name +
-                    "." +
-                    self.plugin_prefix.capitalize() +
-                    module_name)
+                    self.plugin_prefix + module_name + "." + self.plugin_prefix.capitalize() + module_name)
             except ModuleNotFoundError as e:
                 if self.verbose > 0 and self.verbose < 5:
                     print(e)
