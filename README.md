@@ -8,6 +8,10 @@ KAHI is a powerful ETL (Extract, Transform, Load) application designed to constr
 Take a look on plugins examples in the repository
 https://github.com/colav/Kahi_plugins 
 
+List of available plugins:
+·* kahi_scimago_sources
+.* kahi_doaj_sources
+
 ## Installation
 
 To install KAHI, follow these simple steps:
@@ -21,7 +25,7 @@ pip install kahi
 ```
 Additionally, if you require specific plugins, you can install them using the following command:
 ```shell
-pip install kahi[plugin-name]
+pip install plugin-name
 ```
 Replace plugin-name with the name of the desired plugin.
 
@@ -31,24 +35,17 @@ Replace plugin-name with the name of the desired plugin.
 To use KAHI, you need to define a YAML file that contains the workflow and global configuration variables. Here is an example of a YAML file:
 ```yaml
 config:
-  mongodb_url: localhost
+  database_url: localhost:27017
   database_name: kahi
-  log_db: kahi_log
+  log_database: kahi_log
   log_collection: log
-
 workflow:
-  ror_affiliations:
+  scimago_sources:
+    file_path: scimago/scimagojr 2020.csv
+  doaj_sources:
     database_url: localhost:27017
-    database_name: ror
+    database_name: doaj
     collection_name: stage
-
-  staff_affiliations:
-    file_path: data/staff_affiliations.csv
-
-  scienti_affiliations:
-    database_url: localhost:27017
-    database_name: scienti_2022
-    collection_name: products
 ```
 In the config section, you can specify the MongoDB URL, database name, log database, and log collection for KAHI to use.
 

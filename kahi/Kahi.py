@@ -18,7 +18,7 @@ class OrderedLoader(yaml.SafeLoader):
 
 
 class Kahi:
-    def __init__(self, workflow_file, verbose=0):
+    def __init__(self, workflow_file, verbose=0,use_log=True):
         self.plugin_prefix = "kahi_"
         self.workflow_file = workflow_file
         self.workflow = None
@@ -29,6 +29,7 @@ class Kahi:
 
         self.log_db = None
         self.log = None
+        self.use_log = use_log
         self.verbose = verbose
 
     def load_workflow(self):
@@ -75,7 +76,7 @@ class Kahi:
             self.retrieve_logs()
 
         # import modules
-        for module_name in self.workflow.keys():
+        for module_name in set(self.workflow.keys()):
             if self.verbose > 4:
                 print("Loading plugin: " + self.plugin_prefix + module_name)
             try:
@@ -95,12 +96,13 @@ class Kahi:
         # run workflow
         for module_name, params in self.workflow.items():
             executed_module = False
-            if self.log:
-                for log in self.log:
-                    if log["_id"] == module_name:
-                        if log["status"] == 0:
-                            executed_module = True
-                            break
+            if self.use_log:
+                if self.log:
+                    for log in self.log:
+                        if log["_id"] == module_name:
+                            if log["status"] == 0:
+                                executed_module = True
+                                break
             if executed_module:
                 if self.verbose > 4:
                     print("Skipped plugin: " + self.plugin_prefix + module_name)
@@ -121,58 +123,65 @@ class Kahi:
                 time_start = time()
                 status = run()
                 time_elapsed = time() - time_start
-
-                if self.log_db[self.config["log_collection"]
-                               ].find_one({"_id": module_name}):
-                    self.log_db[self.config["log_collection"]].update_one(
-                        {
-                            "_id": module_name
-                        },
-                        {"$set":
+                if self.verbose > 4:
+                    print("Plugin {} finished in {} seconds".format(
+                        module_name,
+                        time_elapsed
+                    ))
+                if self.use_log:
+                    if self.log_db[self.config["log_collection"]
+                                ].find_one({"_id": module_name}):
+                        self.log_db[self.config["log_collection"]].update_one(
                             {
+                                "_id": module_name
+                            },
+                            {"$set":
+                                {
+                                    "time": int(time_start),
+                                    "status": status,
+                                    "message": "ok",
+                                    "time_elapsed": int(time_elapsed)
+                                }
+                            }
+                        )
+                    else:
+                        self.log_db[self.config["log_collection"]].insert_one(
+                            {
+                                "_id": module_name,
                                 "time": int(time_start),
                                 "status": status,
                                 "message": "ok",
                                 "time_elapsed": int(time_elapsed)
                             }
-                         }
-                    )
-                else:
-                    self.log_db[self.config["log_collection"]].insert_one(
-                        {
-                            "_id": module_name,
-                            "time": int(time_start),
-                            "status": status,
-                            "message": "ok",
-                            "time_elapsed": int(time_elapsed)
-                        }
-                    )
+                        )
             except Exception as e:
-                if self.log_db[self.config["log_collection"]
-                               ].find_one({"_id": module_name}):
-                    self.log_db[self.config["log_collection"]].update_one(
-                        {
-                            "_id": module_name
-                        },
-                        {"$set":
+                if self.use_log:
+                    if self.log_db[self.config["log_collection"]
+                                ].find_one({"_id": module_name}):
+                        self.log_db[self.config["log_collection"]].update_one(
                             {
+                                "_id": module_name
+                            },
+                            {"$set":
+                                {
+                                    "time": int(time()),
+                                    "status": 1,
+                                    "message": str(e),
+                                    "time_elapsed": 0
+                                }
+                            }
+                        )
+                    else:
+                        self.log_db[self.config["log_collection"]].insert_one(
+                            {
+                                "_id": module_name,
                                 "time": int(time()),
                                 "status": 1,
                                 "message": str(e),
                                 "time_elapsed": 0
                             }
-                         }
-                    )
-                else:
-                    self.log_db[self.config["log_collection"]].insert_one(
-                        {
-                            "_id": module_name,
-                            "time": int(time()),
-                            "status": 1,
-                            "message": str(e),
-                            "time_elapsed": 0
-                        }
-                    )
+                        )
+                print("Plugin {} failed".format(module_name))
                 raise
-
-        # exit status
+        if self.verbose > 0:
+            print("Workflow finished")
