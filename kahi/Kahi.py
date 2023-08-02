@@ -18,7 +18,7 @@ class OrderedLoader(yaml.SafeLoader):
 
 
 class Kahi:
-    def __init__(self, workflow_file, verbose=0,use_log=True):
+    def __init__(self, workflow_file, verbose=0, use_log=True):
         self.plugin_prefix = "kahi_"
         self.workflow_file = workflow_file
         self.workflow = None
@@ -41,6 +41,8 @@ class Kahi:
             self.workflow = data["workflow"]
             self.config = data["config"]
             self.client = MongoClient(self.config["database_url"])
+            if self.verbose > 4:
+                print(data)
 
     def load_plugins(self, verbose=0):
         """
@@ -130,7 +132,7 @@ class Kahi:
                     ))
                 if self.use_log:
                     if self.log_db[self.config["log_collection"]
-                                ].find_one({"_id": module_name}):
+                                   ].find_one({"_id": module_name}):
                         self.log_db[self.config["log_collection"]].update_one(
                             {
                                 "_id": module_name
@@ -142,7 +144,7 @@ class Kahi:
                                     "message": "ok",
                                     "time_elapsed": int(time_elapsed)
                                 }
-                            }
+                             }
                         )
                     else:
                         self.log_db[self.config["log_collection"]].insert_one(
@@ -157,7 +159,7 @@ class Kahi:
             except Exception as e:
                 if self.use_log:
                     if self.log_db[self.config["log_collection"]
-                                ].find_one({"_id": module_name}):
+                                   ].find_one({"_id": module_name}):
                         self.log_db[self.config["log_collection"]].update_one(
                             {
                                 "_id": module_name
@@ -169,7 +171,7 @@ class Kahi:
                                     "message": str(e),
                                     "time_elapsed": 0
                                 }
-                            }
+                             }
                         )
                     else:
                         self.log_db[self.config["log_collection"]].insert_one(

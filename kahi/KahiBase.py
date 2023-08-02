@@ -28,6 +28,18 @@ class KahiBase:
             "ranking": []
         }
 
+    def empty_subjects(self):
+        return {
+            "updated": [],
+            "names": [],
+            "abbreviations": [],
+            "descriptions": [],
+            "external_ids": [],
+            "external_urls": [],
+            "level": None,
+            "relations": []
+        }
+
     def run(self):
         """
         entry point for the execution of the plugin, this method must be implemented

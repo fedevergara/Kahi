@@ -24,14 +24,15 @@ args = parser.parse_args()
 
 if __name__ == '__main__':
     # create instance of kahi with the workflow file as a parameter
-    log=args.log
-    if log!="yes" or log!="no":
+    log = args.log
+    if log != "yes" or log != "no":
         exit
-    if log=="yes":
-        log=True
-    elif log=="no":
-        log=False
-    kahi = Kahi.Kahi(args.workflow, verbose=args.verbose,use_log=log)
+    if log == "yes":
+        log = True
+    elif log == "no":
+        log = False
+    kahi = Kahi.Kahi(args.workflow, verbose=args.verbose, use_log=log)
     # run the workflow
-    
+
     kahi.run()
+    # kahi.load_workflow()
