@@ -3,6 +3,25 @@ class KahiBase:
     def __init__(self):
         pass
 
+    def empty_affiliation(self):
+        entry = {
+            "updated":[],
+            "names":[],
+            "aliases":[],
+            "abbreviations":[],
+            "types":[],
+            "year_established":None,
+            "status":[],
+            "relations":[],
+            "addresses":[],
+            "external_urls":[],
+            "external_ids":[],
+            "subjects":[],
+            "ranking":[],
+            "description":[]
+        }
+        return entry
+
     def empty_source(self):
         return {
             "updated": [],
