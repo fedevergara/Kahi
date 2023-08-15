@@ -5,20 +5,20 @@ class KahiBase:
 
     def empty_affiliation(self):
         entry = {
-            "updated":[],
-            "names":[],
-            "aliases":[],
-            "abbreviations":[],
-            "types":[],
-            "year_established":None,
-            "status":[],
-            "relations":[],
-            "addresses":[],
-            "external_urls":[],
-            "external_ids":[],
-            "subjects":[],
-            "ranking":[],
-            "description":[]
+            "updated": [],
+            "names": [],
+            "aliases": [],
+            "abbreviations": [],
+            "types": [],
+            "year_established": None,
+            "status": [],
+            "relations": [],
+            "addresses": [],
+            "external_urls": [],
+            "external_ids": [],
+            "subjects": [],
+            "ranking": [],
+            "description": []
         }
         return entry
 
@@ -57,6 +57,52 @@ class KahiBase:
             "external_urls": [],
             "level": None,
             "relations": []
+        }
+
+    def empty_person(self):
+        entry = {
+            "updated":[],
+            "full_name":"",
+            "first_names":[],
+            "last_names":[],
+            "initials":"",
+            "aliases":[],
+            "affiliations":[],
+            "keywords":[],
+            "external_ids": [],
+            "sex":"",
+            "marital_status":None,
+            "ranking":[],
+            "birthplace":{},
+            "birthdate":-1,
+            "degrees":[],
+            "subjects":[]
+        }
+        return entry
+
+    def empty_work(self):
+        return {
+            "titles" : [],
+            "updated" : [],
+            "subtitle" : "",
+            "abstract" : "",
+            "keywords" : [],
+            "types" : [],
+            "external_ids" : [],
+            "external_urls" : [],
+            "date_published" : None,
+            "year_published" : None,
+            "bibliographic_info" : {},
+            "references_count" : None,
+            "references" : [],
+            "citations_count" : [],
+            "citations" : [],
+            "author_count" : None,
+            "authors" : [],
+            "source" : {},
+            "ranking":[],
+            "subjects" : [],
+            "citations_by_year":[]
         }
 
     def run(self):
