@@ -9,8 +9,22 @@ Take a look on plugins examples in the repository
 https://github.com/colav/Kahi_plugins 
 
 List of available plugins:
-·* kahi_scimago_sources
-.* kahi_doaj_sources
+
+* kahi_doaj_sources
+* kahi_minciencias_opendata_affiliations
+* kahi_minciencias_opendata_person
+* kahi_openalex_person
+* kahi_openalex_sources
+* kahi_openalex_subjects
+* kahi_ror_affiliations
+* kahi_scienti_affiliations
+* kahi_scienti_person
+* kahi_scienti_sources
+* kahi_scimago_sources
+* kahi_staff_udea_affiliations
+* kahi_staff_udea_person
+* kahi_wikipedia_affiliations
+* kahi_works
 
 ## Installation
 
@@ -28,6 +42,11 @@ Additionally, if you require specific plugins, you can install them using the fo
 pip install plugin-name
 ```
 Replace plugin-name with the name of the desired plugin.
+
+If the user wants to install all available plugins run:
+```shell
+pip install kahi[all]
+```
 
 
 # Usage
