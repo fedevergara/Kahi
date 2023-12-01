@@ -105,6 +105,74 @@ class KahiBase:
             "citations_by_year": []
         }
 
+    def empty_mobility(self):
+        return {
+            "updated": "",
+            "year": "",
+            "semester": "",
+            "via": "",
+            "modality": "",
+            "category": "",
+            "start_date": "",
+            "end_date": "",
+            "duration": "",
+            "document_type": "",
+            "document": "",
+            "birth_date": "",
+            "first_name" : "",
+            "second_name" : "",
+            "first_surname" : "",
+            "second_surname" : "",
+            "nationality" : [],
+            "email" : "",
+            "migration_status" : {},
+            "country": [],
+            "dependency" : "",
+            "program" : "",
+            "group" : "",
+            "mobility_type_id" : "",
+            "mobility_type" : "",
+            "student_category" : "",
+            "institution" : "",
+            "campus" : "",
+            "mobility_by_agreement" : "",
+            "agreement_code" : "",
+            "national_financing_id" : "",
+            "source_national_financing" : "",
+            "national_funding_value" : "",
+            "international_funding_id" : "",
+            "international_funding_source" : "",
+            "other_international_funding_source" : "",
+            "international_financing_source_value" : "",
+            "international_financing_country" : {},  
+        }
+    
+    def empty_agreement(self):
+        return {
+            "updated": "",
+            "scope": "",
+            "agreement_code": "",
+            "internal_institution": "",
+            "external_institution": "",
+            "modality": "",
+            "categories": "",
+            "abstract": "",
+            "renovation": "",
+            "signatory": "",
+            "signing_date": "",
+            "signing_year": "",
+            "expiration_date": "",
+            "language": "",
+            "remarks": "",
+            "exemption": "",
+            "physical_file": "",
+            "current_agreement_link": "",
+            "previous_agreements_link": "",
+            "international_shipping_data": "",
+            "remarks": "",
+            "documentary_transfer": ""
+        }
+    
     def run(self):
         """
         entry point for the execution of the plugin, this method must be implemented
