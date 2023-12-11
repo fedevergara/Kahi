@@ -98,12 +98,14 @@ class Kahi:
         # run workflow
         for module_name, params in self.workflow.items():
             executed_module = False
+            log_id = module_name
+            if isinstance(params, dict):
+                log_id = module_name + "_" + \
+                    str(params["task_suffix"]) if "task_suffix" in params.keys(
+                    ) else module_name
             if self.use_log:
                 if self.log:
                     for log in self.log:
-                        log_id = module_name + "_" + \
-                            str(params["task_suffix"]) if "task_suffix" in params.keys(
-                            ) else module_name
                         if log["_id"] == log_id:
                             if log["status"] == 0:
                                 executed_module = True
@@ -130,15 +132,15 @@ class Kahi:
                 time_elapsed = time() - time_start
                 if self.verbose > 4:
                     print("Plugin {} finished in {} seconds".format(
-                        module_name,
+                        log_id,
                         time_elapsed
                     ))
                 if self.use_log:
                     if self.log_db[self.config["log_collection"]
-                                   ].find_one({"_id": module_name}):
+                                   ].find_one({"_id": log_id}):
                         self.log_db[self.config["log_collection"]].update_one(
                             {
-                                "_id": module_name
+                                "_id": log_id
                             },
                             {"$set":
                                 {
@@ -152,7 +154,7 @@ class Kahi:
                     else:
                         self.log_db[self.config["log_collection"]].insert_one(
                             {
-                                "_id": module_name,
+                                "_id": log_id,
                                 "time": int(time_start),
                                 "status": status,
                                 "message": "ok",
@@ -162,10 +164,10 @@ class Kahi:
             except Exception as e:
                 if self.use_log:
                     if self.log_db[self.config["log_collection"]
-                                   ].find_one({"_id": module_name}):
+                                   ].find_one({"_id": log_id}):
                         self.log_db[self.config["log_collection"]].update_one(
                             {
-                                "_id": module_name
+                                "_id": log_id
                             },
                             {"$set":
                                 {
@@ -179,14 +181,14 @@ class Kahi:
                     else:
                         self.log_db[self.config["log_collection"]].insert_one(
                             {
-                                "_id": module_name,
+                                "_id": log_id,
                                 "time": int(time()),
                                 "status": 1,
                                 "message": str(e),
                                 "time_elapsed": 0
                             }
                         )
-                print("Plugin {} failed".format(module_name))
+                print("Plugin {} failed".format(log_id))
                 raise
         if self.verbose > 0:
             print("Workflow finished")
