@@ -101,7 +101,8 @@ class Kahi:
             if self.use_log:
                 if self.log:
                     for log in self.log:
-                        if log["_id"] == module_name:
+                        log_id = module_name + "_" + str(params["task_suffix"]) if "task_suffix" in params.keys() else module_name
+                        if log["_id"] == log_id:
                             if log["status"] == 0:
                                 executed_module = True
                                 break

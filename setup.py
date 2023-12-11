@@ -87,18 +87,23 @@ def main():
                 'kahi_doaj_sources',
                 'kahi_minciencias_opendata_affiliations',
                 'kahi_minciencias_opendata_person',
+                'kahi_openalex_affiliations',
                 'kahi_openalex_person',
                 'kahi_openalex_sources',
                 'kahi_openalex_subjects',
+                'kahi_openalex_works',
+                'kahi_ranking_udea_works',
                 'kahi_ror_affiliations',
+                'kahi_scholar_works',
                 'kahi_scienti_affiliations',
                 'kahi_scienti_person',
                 'kahi_scienti_sources',
+                'kahi_scholar_works',
                 'kahi_scimago_sources',
+                'kahi_scopus_works',
                 'kahi_staff_udea_affiliations',
                 'kahi_staff_udea_person',
-                'kahi_wikipedia_affiliations',
-                'kahi_works'
+                'kahi_wos_works'
             ]
         }
     )
