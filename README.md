@@ -13,18 +13,23 @@ List of available plugins:
 * kahi_doaj_sources
 * kahi_minciencias_opendata_affiliations
 * kahi_minciencias_opendata_person
+* kahi_openalex_affiliations
 * kahi_openalex_person
 * kahi_openalex_sources
 * kahi_openalex_subjects
+* kahi_openalex_works
+* kahi_ranking_udea_works
 * kahi_ror_affiliations
+* kahi_scholar_works
 * kahi_scienti_affiliations
 * kahi_scienti_person
 * kahi_scienti_sources
+* kahi_scholar_works
 * kahi_scimago_sources
+* kahi_scopus_works
 * kahi_staff_udea_affiliations
 * kahi_staff_udea_person
-* kahi_wikipedia_affiliations
-* kahi_works
+* kahi_wos_works
 
 ## Installation
 
@@ -76,6 +81,8 @@ Finally, to run the workflow, use the following command:
 kahi_run --workflow worflow.yaml
 ```
 Replace workflow.yaml with the path to your YAML file.
+
+Suggested workflows can be found on [our worflow repository](https://github.com/colav/kahi_workflows).
 
 # Logging
 KAHI keeps a detailed log of each task's execution in a mongodb collection, including the name, execution time, elapsed time, execution status, and error messages. This information is valuable for both users and developers, and it enables the ability to resume the workflow from the last successful task.
