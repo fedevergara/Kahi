@@ -112,10 +112,10 @@ class Kahi:
                                 break
             if executed_module:
                 if self.verbose > 4:
-                    print("Skipped plugin: " + self.plugin_prefix + module_name)
+                    print("Skipped plugin: " + self.plugin_prefix + log_id)
                 continue
             if self.verbose > 4:
-                print("Running plugin: " + self.plugin_prefix + module_name)
+                print("Running plugin: " + self.plugin_prefix + log_id)
 
             plugin_class = getattr(
                 self.plugins[module_name],
