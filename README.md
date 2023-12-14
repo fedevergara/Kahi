@@ -87,7 +87,7 @@ Suggested workflows can be found on [our worflow repository](https://github.com/
 # Logging
 KAHI keeps a detailed log of each plugin's execution in a mongodb collection, including the name, execution time, elapsed time, execution status, and error messages. This information is valuable for both users and developers, and it enables the ability to resume the workflow from the last successful task.
 
-Plugins can take advantage of a researved parameter * task *. When the reserved paramer task is used, the log entry becomes unique with the name of the plugin and the task as a suffix.
+Plugins can take advantage of a researved parameter **task**. When the reserved paramer task is used, the log entry becomes unique with the name of the plugin and the task as a suffix.
 
 # Contributing
 If you are interested in contributing to KAHI or creating your own plugins, please refer to the kahi-plugins repository. It contains the necessary resources and documentation to implement new plugins easily. Feel free to submit pull requests or report any issues you encounter.
