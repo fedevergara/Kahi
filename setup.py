@@ -80,7 +80,8 @@ def main():
 
         # Dependent packages (distributions)
         install_requires=[
-            "pyyaml"
+            "pyyaml",
+            "pymongo"
         ],
         extras_require={
             'all': [

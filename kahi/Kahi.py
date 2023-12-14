@@ -101,7 +101,7 @@ class Kahi:
             log_id = module_name
             if isinstance(params, dict):
                 log_id = module_name + "_" + \
-                    str(params["task_suffix"]) if "task_suffix" in params.keys(
+                    str(params["task"]) if "task" in params.keys(
                     ) else module_name
             if self.use_log:
                 if self.log:
