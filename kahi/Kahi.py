@@ -96,13 +96,14 @@ class Kahi:
                     raise
 
         # run workflow
-        for module_name, params in self.workflow.items():
+        for log_id, params in self.workflow.items():
             executed_module = False
-            log_id = module_name
-            if isinstance(params, dict):
-                log_id = module_name + "_" + \
-                    str(params["task"]) if "task" in params.keys(
-                    ) else module_name
+            log_split = log_id.split("/")
+            if len(log_split) > 1:
+                module_name = log_split[0]
+                params["task"] = log_split[1]
+            else:
+                module_name = log_id
             if self.use_log:
                 if self.log:
                     for log in self.log:
