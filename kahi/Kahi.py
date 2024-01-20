@@ -79,6 +79,8 @@ class Kahi:
 
         # import modules
         for module_name in set(self.workflow.keys()):
+            if len(module_name.split("/")) > 1:
+                module_name = module_name.split("/")[0]
             if self.verbose > 4:
                 print("Loading plugin: " + self.plugin_prefix + module_name)
             try:
@@ -124,6 +126,7 @@ class Kahi:
 
             plugin_config = self.config.copy()
             plugin_config[module_name] = self.workflow[module_name]
+            plugin_config[module_name]["task"] = params["task"] if "task" in params else None
             plugin_instance = plugin_class(config=plugin_config)
 
             run = getattr(plugin_instance, "run")
