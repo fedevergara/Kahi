@@ -79,11 +79,15 @@ class Kahi:
 
         # import modules
         for module_name in set(self.workflow.keys()):
+            if len(module_name.split("/")) > 1:
+                module_name = module_name.split("/")[0]
             if self.verbose > 4:
                 print("Loading plugin: " + self.plugin_prefix + module_name)
             try:
                 self.plugins[module_name] = import_module(
                     self.plugin_prefix + module_name + "." + self.plugin_prefix.capitalize() + module_name)
+                self.plugins[module_name + "._version"] = import_module(
+                    self.plugin_prefix + module_name + "._version")
             except ModuleNotFoundError as e:
                 if self.verbose > 0 and self.verbose < 5:
                     print(e)
@@ -96,13 +100,14 @@ class Kahi:
                     raise
 
         # run workflow
-        for module_name, params in self.workflow.items():
+        for log_id, params in self.workflow.items():
             executed_module = False
-            log_id = module_name
-            if isinstance(params, dict):
-                log_id = module_name + "_" + \
-                    str(params["task"]) if "task" in params.keys(
-                    ) else module_name
+            log_split = log_id.split("/")
+            if len(log_split) > 1:
+                module_name = log_split[0]
+                params["task"] = log_split[1]
+            else:
+                module_name = log_id
             if self.use_log:
                 if self.log:
                     for log in self.log:
@@ -121,8 +126,12 @@ class Kahi:
                 self.plugins[module_name],
                 self.plugin_prefix.capitalize() + module_name)
 
+            plugin_class_version = getattr(
+                self.plugins[module_name + "._version"], "get_version")
+
             plugin_config = self.config.copy()
             plugin_config[module_name] = self.workflow[module_name]
+            plugin_config[module_name]["task"] = params["task"] if "task" in params else None
             plugin_instance = plugin_class(config=plugin_config)
 
             run = getattr(plugin_instance, "run")
@@ -144,6 +153,7 @@ class Kahi:
                             },
                             {"$set":
                                 {
+                                    "plugin_version": plugin_class_version(),
                                     "time": int(time_start),
                                     "status": status,
                                     "message": "ok",
@@ -155,6 +165,7 @@ class Kahi:
                         self.log_db[self.config["log_collection"]].insert_one(
                             {
                                 "_id": log_id,
+                                "plugin_version": plugin_class_version(),
                                 "time": int(time_start),
                                 "status": status,
                                 "message": "ok",
