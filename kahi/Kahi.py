@@ -131,7 +131,11 @@ class Kahi:
 
             plugin_config = self.config.copy()
             plugin_config[module_name] = self.workflow[module_name]
-            plugin_config[module_name]["task"] = params["task"] if "task" in params else None
+            if isinstance(plugin_config[module_name], list):
+                for i in range(len(plugin_config[module_name])):
+                    plugin_config[module_name][i]["task"] = params["task"] if "task" in params else None
+            else:
+                plugin_config[module_name]["task"] = params["task"] if "task" in params else None
             plugin_instance = plugin_class(config=plugin_config)
 
             run = getattr(plugin_instance, "run")
@@ -154,6 +158,7 @@ class Kahi:
                             {"$set":
                                 {
                                     "plugin_version": plugin_class_version(),
+                                    "config": plugin_config[module_name],
                                     "time": int(time_start),
                                     "status": status,
                                     "message": "ok",
@@ -166,6 +171,7 @@ class Kahi:
                             {
                                 "_id": log_id,
                                 "plugin_version": plugin_class_version(),
+                                "config": plugin_config[module_name],
                                 "time": int(time_start),
                                 "status": status,
                                 "message": "ok",
