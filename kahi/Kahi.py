@@ -86,7 +86,7 @@ class Kahi:
             try:
                 self.plugins[module_name] = import_module(
                     self.plugin_prefix + module_name + "." + self.plugin_prefix.capitalize() + module_name)
-                self.plugins[module_name+"._version"] = import_module(
+                self.plugins[module_name + "._version"] = import_module(
                     self.plugin_prefix + module_name + "._version")
             except ModuleNotFoundError as e:
                 if self.verbose > 0 and self.verbose < 5:
@@ -127,7 +127,7 @@ class Kahi:
                 self.plugin_prefix.capitalize() + module_name)
 
             plugin_class_version = getattr(
-                self.plugins[module_name+"._version"], "get_version")
+                self.plugins[module_name + "._version"], "get_version")
 
             plugin_config = self.config.copy()
             plugin_config[module_name] = self.workflow[module_name]
