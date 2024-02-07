@@ -188,6 +188,8 @@ class Kahi:
                             },
                             {"$set":
                                 {
+                                    "plugin_version": plugin_class_version(),
+                                    "config": plugin_config[module_name],
                                     "time": int(time()),
                                     "status": 1,
                                     "message": str(e),
@@ -199,6 +201,8 @@ class Kahi:
                         self.log_db[self.config["log_collection"]].insert_one(
                             {
                                 "_id": log_id,
+                                "plugin_version": plugin_class_version(),
+                                "config": plugin_config[module_name],
                                 "time": int(time()),
                                 "status": 1,
                                 "message": str(e),
