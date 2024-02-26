@@ -78,11 +78,11 @@ class Kahi:
             self.retrieve_logs()
 
         # import modules
-        for module_name in set(self.workflow.keys()):
-            if len(module_name.split("/")) > 1:
-                module_name = module_name.split("/")[0]
+        for module_name in self.workflow.keys():
             if self.verbose > 4:
                 print("Loading plugin: " + self.plugin_prefix + module_name)
+            if len(module_name.split("/")) > 1:
+                module_name = module_name.split("/")[0]
             try:
                 self.plugins[module_name] = import_module(
                     self.plugin_prefix + module_name + "." + self.plugin_prefix.capitalize() + module_name)
@@ -130,7 +130,7 @@ class Kahi:
                 self.plugins[module_name + "._version"], "get_version")
 
             plugin_config = self.config.copy()
-            plugin_config[module_name] = self.workflow[module_name]
+            plugin_config[module_name] = self.workflow[log_id]
             if isinstance(plugin_config[module_name], list):
                 for i in range(len(plugin_config[module_name])):
                     plugin_config[module_name][i]["task"] = params["task"] if "task" in params else None
