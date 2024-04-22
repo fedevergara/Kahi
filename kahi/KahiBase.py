@@ -76,7 +76,8 @@ class KahiBase:
             "birthplace": {},
             "birthdate": -1,
             "degrees": [],
-            "subjects": []
+            "subjects": [],
+            "related_works": []
         }
         return entry
 
