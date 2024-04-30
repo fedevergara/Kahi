@@ -103,7 +103,8 @@ class KahiBase:
             "source": {},
             "ranking": [],
             "subjects": [],
-            "citations_by_year": []
+            "citations_by_year": [],
+            "groups": []
         }
 
     def run(self):
