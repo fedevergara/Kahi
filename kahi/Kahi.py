@@ -4,6 +4,10 @@ import pkgutil
 from collections import OrderedDict
 from pymongo import MongoClient
 from time import time
+import cProfile
+import pstats
+import io
+from pstats import SortKey
 
 
 class OrderedLoader(yaml.SafeLoader):
@@ -140,9 +144,19 @@ class Kahi:
 
             run = getattr(plugin_instance, "run")
             try:
+                if self.config["profile"]:
+                    pr = cProfile.Profile()
+                    pr.enable()
                 time_start = time()
                 status = run()
                 time_elapsed = time() - time_start
+                if self.config["profile"]:
+                    pr.disable()
+                    s = io.StringIO()
+                    sortby = SortKey.CUMULATIVE
+                    ps = pstats.Stats(pr, stream=s).sort_stats(sortby)
+                    ps.print_stats()
+                    print(s.getvalue())
                 if self.verbose > 4:
                     print("Plugin {} finished in {} seconds".format(
                         log_id,
