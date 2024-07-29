@@ -51,10 +51,10 @@ if os.name in ('nt', 'dos'):
 def main():
     setup(
         # Application name:
-        name="Kahi",
+        name="Kahi_template",
 
         # Version number (initial):
-        version=get_version('kahi/_version.py'),
+        version=get_version('kahi_template/_version.py'),
 
         # Application author details:
         author="Colav",
@@ -67,46 +67,21 @@ def main():
         include_package_data=True,
 
         # Details
-        url="https://github.com/colav/Kahi",
-        scripts=['bin/kahi_run','bin/kahi_generate'],
-
+        url="https://github.com/colav/Kahi_xyz",
+        #
         license="BSD",
 
-        description="ETL (Extract, Transform and Load) for bibliographic data using an advance data workflow",
+        description="Kahi plugin template",
 
         long_description=open("README.md").read(),
 
         long_description_content_type="text/markdown",
 
         # Dependent packages (distributions)
+        # put you packages here
         install_requires=[
-            "pyyaml",
-            "pymongo"
+            'kahi'
         ],
-        extras_require={
-            'all': [
-                'kahi_doaj_sources',
-                'kahi_minciencias_opendata_affiliations',
-                'kahi_minciencias_opendata_person',
-                'kahi_openalex_affiliations',
-                'kahi_openalex_person',
-                'kahi_openalex_sources',
-                'kahi_openalex_subjects',
-                'kahi_openalex_works',
-                'kahi_ranking_udea_works',
-                'kahi_ror_affiliations',
-                'kahi_scholar_works',
-                'kahi_scienti_affiliations',
-                'kahi_scienti_person',
-                'kahi_scienti_sources',
-                'kahi_scholar_works',
-                'kahi_scimago_sources',
-                'kahi_scopus_works',
-                'kahi_staff_udea_affiliations',
-                'kahi_staff_udea_person',
-                'kahi_wos_works'
-            ]
-        }
     )
 
 
