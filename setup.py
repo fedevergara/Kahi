@@ -68,7 +68,7 @@ def main():
 
         # Details
         url="https://github.com/colav/Kahi",
-        scripts=['bin/kahi_run','bin/kahi_generate'],
+        scripts=['bin/kahi_run', 'bin/kahi_generate'],
 
         license="BSD",
 
