@@ -106,7 +106,24 @@ class KahiBase:
             "citations_by_year": [],
             "groups": []
         }
-
+    def empty_event(self):
+        return {
+            "titles": [],
+            "updated": [],
+            "subtitle": "",
+            "abstract": "",
+            "keywords": [],
+            "types": [],
+            "external_ids": [],
+            "external_urls": [],
+            "date_held": None,
+            "year_held": None,
+            "author_count": None,
+            "authors": [],
+            "ranking": [],
+            "subjects": [],
+            "groups": []
+        }
     def run(self):
         """
         entry point for the execution of the plugin, this method must be implemented
