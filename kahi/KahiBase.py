@@ -85,7 +85,6 @@ class KahiBase:
         return {
             "titles": [],
             "updated": [],
-            "subtitle": "",
             "abstract": "",
             "keywords": [],
             "types": [],
@@ -111,9 +110,7 @@ class KahiBase:
         return {
             "titles": [],
             "updated": [],
-            "subtitle": "",
             "abstract": "",
-            "keywords": [],
             "types": [],
             "external_ids": [],
             "external_urls": [],
@@ -122,7 +119,37 @@ class KahiBase:
             "author_count": None,
             "authors": [],
             "ranking": [],
-            "subjects": [],
+            "groups": []
+        }
+
+    def empty_project(self):
+        return {
+            "titles": [],
+            "updated": [],
+            "abstract": "",
+            "types": [],
+            "external_ids": [],
+            "external_urls": [],
+            "date_init": None,
+            "date_end": None,
+            "year_init": None,
+            "year_end": None,
+            "author_count": None,
+            "authors": [],
+            "ranking": [],
+            "groups": []
+        }
+
+    def empty_patent(self):
+        return {
+            "titles": [],
+            "updated": [],
+            "types": [],
+            "external_ids": [],
+            "external_urls": [],
+            "author_count": None,
+            "authors": [],
+            "ranking": [],
             "groups": []
         }
 
