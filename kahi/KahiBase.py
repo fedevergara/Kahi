@@ -85,7 +85,6 @@ class KahiBase:
         return {
             "titles": [],
             "updated": [],
-            "subtitle": "",
             "abstract": "",
             "keywords": [],
             "types": [],
@@ -104,6 +103,70 @@ class KahiBase:
             "ranking": [],
             "subjects": [],
             "citations_by_year": [],
+            "groups": []
+        }
+
+    def empty_event(self):
+        return {
+            "titles": [],
+            "updated": [],
+            "abstract": "",
+            "types": [],
+            "external_ids": [],
+            "external_urls": [],
+            "date_held": None,
+            "year_held": None,
+            "author_count": None,
+            "authors": [],
+            "ranking": [],
+            "groups": []
+        }
+
+    def empty_project(self):
+        return {
+            "titles": [],
+            "updated": [],
+            "abstract": "",
+            "types": [],
+            "external_ids": [],
+            "external_urls": [],
+            "date_init": None,
+            "date_end": None,
+            "year_init": None,
+            "year_end": None,
+            "author_count": None,
+            "authors": [],
+            "ranking": [],
+            "groups": []
+        }
+
+    def empty_patent(self):
+        return {
+            "titles": [],
+            "updated": [],
+            "types": [],
+            "external_ids": [],
+            "external_urls": [],
+            "author_count": None,
+            "authors": [],
+            "ranking": [],
+            "groups": []
+        }
+
+    def empty_work_others(self):
+        return {
+            "titles": [],
+            "updated": [],
+            "abstract": "",
+            "keywords": [],
+            "types": [],
+            "external_ids": [],
+            "external_urls": [],
+            "date_published": None,
+            "year_published": None,
+            "author_count": None,
+            "authors": [],
+            "ranking": [],
             "groups": []
         }
 
