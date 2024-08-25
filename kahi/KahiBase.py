@@ -153,6 +153,23 @@ class KahiBase:
             "groups": []
         }
 
+    def empty_work_others(self):
+        return {
+            "titles": [],
+            "updated": [],
+            "abstract": "",
+            "keywords": [],
+            "types": [],
+            "external_ids": [],
+            "external_urls": [],
+            "date_published": None,
+            "year_published": None,
+            "author_count": None,
+            "authors": [],
+            "ranking": [],
+            "groups": []
+        }
+
     def run(self):
         """
         entry point for the execution of the plugin, this method must be implemented
