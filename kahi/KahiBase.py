@@ -153,7 +153,7 @@ class KahiBase:
             "groups": []
         }
 
-    def empty_work_others(self):
+    def empty_work_other(self):
         return {
             "titles": [],
             "updated": [],
