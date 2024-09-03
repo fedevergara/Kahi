@@ -93,6 +93,7 @@ class KahiBase:
             "date_published": None,
             "year_published": None,
             "bibliographic_info": {},
+            "open_access": {},
             "references_count": None,
             "references": [],
             "citations_count": [],
