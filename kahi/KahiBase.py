@@ -85,6 +85,7 @@ class KahiBase:
         return {
             "titles": [],
             "updated": [],
+            "doi": "",
             "abstract": "",
             "keywords": [],
             "types": [],
