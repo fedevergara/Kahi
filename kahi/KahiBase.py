@@ -86,7 +86,7 @@ class KahiBase:
             "titles": [],
             "updated": [],
             "doi": "",
-            "abstract": "",
+            "abstracts": [],
             "keywords": [],
             "types": [],
             "external_ids": [],
