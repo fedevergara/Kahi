@@ -85,7 +85,8 @@ class KahiBase:
         return {
             "titles": [],
             "updated": [],
-            "abstract": "",
+            "doi": "",
+            "abstracts": [],
             "keywords": [],
             "types": [],
             "external_ids": [],
@@ -93,6 +94,7 @@ class KahiBase:
             "date_published": None,
             "year_published": None,
             "bibliographic_info": {},
+            "open_access": {},
             "references_count": None,
             "references": [],
             "citations_count": [],
@@ -153,7 +155,7 @@ class KahiBase:
             "groups": []
         }
 
-    def empty_work_others(self):
+    def empty_work_other(self):
         return {
             "titles": [],
             "updated": [],
