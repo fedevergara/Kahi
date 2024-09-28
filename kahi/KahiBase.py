@@ -95,7 +95,7 @@ class KahiBase:
             "year_published": None,
             "bibliographic_info": {},
             "open_access": {},
-            "apc": {"paid":{}},
+            "apc": {"paid": {}},
             "references_count": None,
             "references": [],
             "citations_count": [],
