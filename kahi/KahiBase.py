@@ -18,7 +18,33 @@ class KahiBase:
             "external_ids": [],
             "subjects": [],
             "ranking": [],
-            "description": []
+            "description": [],
+            "citation_count": [],
+            "products_count": 0
+        }
+        return entry
+
+    def empty_publisher(self):
+        entry = {
+            "updated": [],
+            "names": [],
+            "aliases": [],
+            "abbreviations": [],
+            "lineage": [],
+            "parent_publisher": None,
+            "hierarchy_level": None,
+            "types": [],
+            "year_established": None,
+            "status": [],
+            "relations": [],
+            "addresses": [],
+            "external_urls": [],
+            "external_ids": [],
+            "subjects": [],
+            "ranking": [],
+            "description": [],
+            "citation_count": [],
+            "products_count": 0
         }
         return entry
 
@@ -77,6 +103,8 @@ class KahiBase:
             "birthdate": -1,
             "degrees": [],
             "subjects": [],
+            "citations_count": [],
+            "products_count": 0,
             "related_works": []
         }
         return entry
