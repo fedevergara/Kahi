@@ -4,6 +4,10 @@ import pkgutil
 from collections import OrderedDict
 from pymongo import MongoClient
 from time import time
+import cProfile
+import pstats
+import io
+from pstats import SortKey
 
 
 class OrderedLoader(yaml.SafeLoader):
@@ -78,12 +82,16 @@ class Kahi:
             self.retrieve_logs()
 
         # import modules
-        for module_name in set(self.workflow.keys()):
+        for module_name in self.workflow.keys():
             if self.verbose > 4:
                 print("Loading plugin: " + self.plugin_prefix + module_name)
+            if len(module_name.split("/")) > 1:
+                module_name = module_name.split("/")[0]
             try:
                 self.plugins[module_name] = import_module(
                     self.plugin_prefix + module_name + "." + self.plugin_prefix.capitalize() + module_name)
+                self.plugins[module_name + "._version"] = import_module(
+                    self.plugin_prefix + module_name + "._version")
             except ModuleNotFoundError as e:
                 if self.verbose > 0 and self.verbose < 5:
                     print(e)
@@ -96,13 +104,14 @@ class Kahi:
                     raise
 
         # run workflow
-        for module_name, params in self.workflow.items():
+        for log_id, params in self.workflow.items():
             executed_module = False
-            log_id = module_name
-            if isinstance(params, dict):
-                log_id = module_name + "_" + \
-                    str(params["task"]) if "task" in params.keys(
-                    ) else module_name
+            log_split = log_id.split("/")
+            if len(log_split) > 1:
+                module_name = log_split[0]
+                params["task"] = log_split[1]
+            else:
+                module_name = log_id
             if self.use_log:
                 if self.log:
                     for log in self.log:
@@ -121,15 +130,33 @@ class Kahi:
                 self.plugins[module_name],
                 self.plugin_prefix.capitalize() + module_name)
 
+            plugin_class_version = getattr(
+                self.plugins[module_name + "._version"], "get_version")
+
             plugin_config = self.config.copy()
-            plugin_config[module_name] = self.workflow[module_name]
+            plugin_config[module_name] = self.workflow[log_id]
+            if isinstance(plugin_config[module_name], list):
+                for i in range(len(plugin_config[module_name])):
+                    plugin_config[module_name][i]["task"] = params["task"] if "task" in params else None
+            else:
+                plugin_config[module_name]["task"] = params["task"] if "task" in params else None
             plugin_instance = plugin_class(config=plugin_config)
 
             run = getattr(plugin_instance, "run")
             try:
+                if self.config["profile"]:
+                    pr = cProfile.Profile()
+                    pr.enable()
                 time_start = time()
                 status = run()
                 time_elapsed = time() - time_start
+                if self.config["profile"]:
+                    pr.disable()
+                    s = io.StringIO()
+                    sortby = SortKey.CUMULATIVE
+                    ps = pstats.Stats(pr, stream=s).sort_stats(sortby)
+                    ps.print_stats()
+                    print(s.getvalue())
                 if self.verbose > 4:
                     print("Plugin {} finished in {} seconds".format(
                         log_id,
@@ -144,6 +171,8 @@ class Kahi:
                             },
                             {"$set":
                                 {
+                                    "plugin_version": plugin_class_version(),
+                                    "config": plugin_config[module_name],
                                     "time": int(time_start),
                                     "status": status,
                                     "message": "ok",
@@ -155,6 +184,8 @@ class Kahi:
                         self.log_db[self.config["log_collection"]].insert_one(
                             {
                                 "_id": log_id,
+                                "plugin_version": plugin_class_version(),
+                                "config": plugin_config[module_name],
                                 "time": int(time_start),
                                 "status": status,
                                 "message": "ok",
@@ -171,6 +202,8 @@ class Kahi:
                             },
                             {"$set":
                                 {
+                                    "plugin_version": plugin_class_version(),
+                                    "config": plugin_config[module_name],
                                     "time": int(time()),
                                     "status": 1,
                                     "message": str(e),
@@ -182,6 +215,8 @@ class Kahi:
                         self.log_db[self.config["log_collection"]].insert_one(
                             {
                                 "_id": log_id,
+                                "plugin_version": plugin_class_version(),
+                                "config": plugin_config[module_name],
                                 "time": int(time()),
                                 "status": 1,
                                 "message": str(e),
