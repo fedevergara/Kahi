@@ -70,7 +70,9 @@ class KahiBase:
             "copyright": {},
             "licenses": [],
             "subjects": [],
-            "ranking": []
+            "ranking": [],
+            "citation_count": [],
+            "products_count": 0
         }
 
     def empty_subjects(self):
