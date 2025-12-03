@@ -64,6 +64,7 @@ class KahiBase:
             "review_processes": [],
             "waiver": {},
             "plagiarism_detection": False,
+            "open_access": [],
             "open_access_start_year": None,
             "publication_time_weeks": None,
             "apc": {},
